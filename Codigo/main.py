@@ -66,9 +66,7 @@ class MyWindow(QtWidgets.QMainWindow):
         if path.endswith('.mp4'):
             self.label_warning.setVisible(False)
             self.btnSiguiente1.setEnabled(True)
-            with open('./Info/path.txt', 'w') as f:
-                f.write(path)
-                f.close()
+            write_path(path)
         else:
             self.label_warning.setVisible(True)
 
@@ -81,23 +79,7 @@ class MyWindow(QtWidgets.QMainWindow):
 
 
     #Cambiar a segunda pantalla
-    def cambiarSegundaVentana(self, path):
-        '''#Cargamos la segunda ventana
-        uic.loadUi('./Interfaz/segundapantalla.ui', self)
-        qtRectangle = self.frameGeometry()
-        centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
-        qtRectangle.moveCenter(centerPoint)
-        self.move(qtRectangle.topLeft())
-
-        #Inicializamos el widget del video
-        self.mediaPlayer = QtMultimedia.QMediaPlayer(self)
-        self.mediaPlayer.setVideoOutput(self.widget)
-
-        #Cargamos el video seleccionado en la ventana anterior
-        url = cargarVideo(path)
-        self.mediaPlayer.setMedia(QtMultimedia.QMediaContent(url))
-        self.mediaPlayer.play()'''
-
+    def cambiarSegundaVentana(self):
         self.segunda_ventana = QApplication(sys.argv)
         self.wp= Window_Player()
         self.wp.__init__()

@@ -3,7 +3,8 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 import sys
 from PyQt5.QtCore import Qt, QUrl
-
+import os
+from funciones_interfaz import *
 
 class Window_Player(QWidget):
     def __init__(self):
@@ -12,20 +13,19 @@ class Window_Player(QWidget):
         self.setWindowTitle("Media Player")
         #self.setGeometry(350,100,1100,700)
         self.setMinimumSize(900,600)
-        self.cutBtn.clicked.connect(self.cutVideo)
 
-        path = get_path()
-        self.create_player(path)
+        
+        self.create_player()
 
         self.show()
 
     ##IIIIMPORTANT (metodo a incorporar)
-    def create_player(self, path):
+    def create_player(self):
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
 
         #Video widget
         video_widget = QVideoWidget()
-
+        path = get_path()
         self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(path)))
         video_widget.setMinimumSize(500,300)
 
@@ -56,13 +56,13 @@ class Window_Player(QWidget):
         self.expLabel = QLabel()
         self.expLabel.setText('(Formato: xx.xx)')
         self.cutBtn = QPushButton('Cortar')
+        
 
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0,0,0,0)
         hbox.addWidget(self.playBtn)
         hbox.addWidget(self.inicioLabel)
         hbox.addWidget(self.slider)
-        #hbox.addWidget(self.finLabel)
 
         hbox_2 = QHBoxLayout()
         hbox_2.setContentsMargins(150,0,150,0)
@@ -87,7 +87,7 @@ class Window_Player(QWidget):
         self.mediaPlayer.stateChanged.connect(self.mediastate_changed)
         self.mediaPlayer.positionChanged.connect(self.position_changed)
         self.mediaPlayer.durationChanged.connect(self.duration_changed)
-
+        self.cutBtn.clicked.connect(self.cutVideo)
 
     def play_video(self):
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
@@ -114,13 +114,19 @@ class Window_Player(QWidget):
 
     def set_position(self, position):
         self.mediaPlayer.setPosition(position)
+
+    def cutVideo (self):
+        path = get_path()
+        valorIn = self.initCut.text()
+        valorF  = self.finCut.text()
+        
+        path_new = cortar(path, valorIn, valorF)
+        delete_path()
+        write_path(path_new)
+        QWidget.update()
         
 
-    def get_path(self):
-        with open('./Info/path.txt', 'r') as f:
-            path = f.read()
-            f.close()
-        return path
+
 
 '''app  = QApplication(sys.argv)
 window = Window_Player()
