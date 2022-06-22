@@ -3,7 +3,6 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 import sys
 from PyQt5.QtCore import Qt, QUrl
-import os
 from funciones_interfaz import *
 
 class Window_Player(QWidget):
@@ -30,23 +29,18 @@ class Window_Player(QWidget):
         video_widget.setMinimumSize(500,300)
 
 
-
+        #horizontal 1
         self.playBtn = QPushButton()
         self.playBtn.setEnabled(True)     
-
         self.inicioLabel = QLabel()
-
         self.inicioLabel.setText('00.00')
-
-
         self.playBtn.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
         self.playBtn.clicked.connect(self.play_video)
-
         self.slider = QSlider(Qt.Horizontal)
         self.slider.setRange(0,0)
         self.slider.sliderMoved.connect(self.set_position)
         
-
+        #horizontal 2
         self.initLabel = QLabel()
         self.initLabel.setText('Cortar desde el segundo: ')
         self.initCut = QLineEdit()
@@ -57,6 +51,11 @@ class Window_Player(QWidget):
         self.expLabel.setText('(Formato: xx.xx)')
         self.cutBtn = QPushButton('Cortar')
         
+        #horizontal 3
+        self.loadLabel = QLabel()
+        self.loadLabel.setVisible(False)
+        self.loadLabel.setText('Espere un momento mientras se genera el video cortado...')
+        self.readyBtn = QPushButton('Listo')
 
         hbox = QHBoxLayout()
         hbox.setContentsMargins(0,0,0,0)
@@ -73,12 +72,18 @@ class Window_Player(QWidget):
         hbox_2.addWidget(self.expLabel)
         hbox_2.addWidget(self.cutBtn)
 
+        
+        hbox_3 = QHBoxLayout()
+        hbox_3.setContentsMargins(400,20,50,20)
+        hbox_3.addWidget(self.loadLabel)
+        hbox_3.addWidget(self.readyBtn)
 
 
         vbox = QVBoxLayout()
         vbox.addWidget(video_widget)
         vbox.addLayout(hbox)
         vbox.addLayout(hbox_2)
+        vbox.addLayout(hbox_3)
 
         self.mediaPlayer.setVideoOutput(video_widget)
 
@@ -116,15 +121,19 @@ class Window_Player(QWidget):
         self.mediaPlayer.setPosition(position)
 
     def cutVideo (self):
+        self.horiz3()
         path = get_path()
         valorIn = self.initCut.text()
         valorF  = self.finCut.text()
-        
         path_new = cortar(path, valorIn, valorF)
         delete_path()
         write_path(path_new)
-        QWidget.update()
+        app.closeAllWindows()
+
         
+    def horiz3 (self):
+        self.loadLabel.setVisible(True)
+        self.readyBtn.setEnabled(False)
 
 
 
@@ -139,3 +148,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Window_Player()
     sys.exit(app.exec_())
+
+    
