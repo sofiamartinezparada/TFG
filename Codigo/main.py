@@ -4,7 +4,9 @@ from funciones_interfaz import *
 import os
 from patrones import velocidades_marcha, embragar
 from PyQt5 import QtMultimedia, QtWidgets, uic
+from PyQt5.QtWidgets import QApplication
 import sys
+from video_player import Window_Player
 
 
 info  = main_read()
@@ -29,8 +31,7 @@ por_embrague = embragar()
 print(por_embrague)'''
 
 
-#------------ Variables Globales ------------#
-path = ' '  #ruta del archivo de video
+
 
 #INTERFAZ
 class MyWindow(QtWidgets.QMainWindow):
@@ -54,18 +55,23 @@ class MyWindow(QtWidgets.QMainWindow):
         self.btnSiguiente1.setEnabled(False)
         self.btnSiguiente1.clicked.connect(self.cambiarSegundaVentana)
 
+        
+
     
         # Inserta un vídeo desde una ruta local
     def insertarVideoLocal(self):
         a = self.openDialogBox()
-        global path
         path = os.path.abspath(str(a[0]))
         self.ruta.setText(path)
         if path.endswith('.mp4'):
             self.label_warning.setVisible(False)
             self.btnSiguiente1.setEnabled(True)
+            with open('./Info/path.txt', 'w') as f:
+                f.write(path)
+                f.close()
         else:
             self.label_warning.setVisible(True)
+
 
 
     # Abrir cuadro de diálogo
@@ -75,8 +81,8 @@ class MyWindow(QtWidgets.QMainWindow):
 
 
     #Cambiar a segunda pantalla
-    def cambiarSegundaVentana(self):
-        #Cargamos la segunda ventana
+    def cambiarSegundaVentana(self, path):
+        '''#Cargamos la segunda ventana
         uic.loadUi('./Interfaz/segundapantalla.ui', self)
         qtRectangle = self.frameGeometry()
         centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
@@ -90,7 +96,12 @@ class MyWindow(QtWidgets.QMainWindow):
         #Cargamos el video seleccionado en la ventana anterior
         url = cargarVideo(path)
         self.mediaPlayer.setMedia(QtMultimedia.QMediaContent(url))
-        self.mediaPlayer.play()
+        self.mediaPlayer.play()'''
+
+        self.segunda_ventana = QApplication(sys.argv)
+        self.wp= Window_Player()
+        self.wp.__init__()
+
 
 
         #Boton siguiente

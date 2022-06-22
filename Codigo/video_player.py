@@ -5,24 +5,26 @@ import sys
 from PyQt5.QtCore import Qt, QUrl
 
 
-class Window(QWidget):
+class Window_Player(QWidget):
     def __init__(self):
-        super().__init__()
+        super(Window_Player,self).__init__()
         
         self.setWindowTitle("Media Player")
         #self.setGeometry(350,100,1100,700)
         self.setMinimumSize(900,600)
         self.cutBtn.clicked.connect(self.cutVideo)
 
-        self.create_player()
+        path = get_path()
+        self.create_player(path)
+
+        self.show()
 
     ##IIIIMPORTANT (metodo a incorporar)
-    def create_player(self):
+    def create_player(self, path):
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
 
         #Video widget
         video_widget = QVideoWidget()
-        path = '/Users/sofiamartinezparada/Library/CloudStorage/OneDrive-Personal/UEM/4º/2º SEMESTRE/TFG/Info Borja/Rotonda 2021-07-06/2021_07_06____11_25____1_Subjetiva.ROT 1.mp4'
 
         self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(path)))
         video_widget.setMinimumSize(500,300)
@@ -87,7 +89,6 @@ class Window(QWidget):
         self.mediaPlayer.durationChanged.connect(self.duration_changed)
 
 
-
     def play_video(self):
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
             self.mediaPlayer.pause()
@@ -115,10 +116,20 @@ class Window(QWidget):
         self.mediaPlayer.setPosition(position)
         
 
+    def get_path(self):
+        with open('./Info/path.txt', 'r') as f:
+            path = f.read()
+            f.close()
+        return path
 
-app  = QApplication(sys.argv)
-window = Window()
+'''app  = QApplication(sys.argv)
+window = Window_Player()
 window.resize(640, 480)
 
 window.show()
-sys.exit(app.exec_()) 
+sys.exit(app.exec_()) '''
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Window_Player()
+    sys.exit(app.exec_())
