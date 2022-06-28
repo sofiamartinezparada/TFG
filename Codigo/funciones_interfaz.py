@@ -4,6 +4,7 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 import os
 
+
 #------------ Segunda Ventana ------------#
 
 def cargarVideo(path):
@@ -55,3 +56,4 @@ def write_path(path):
     with open('./Info/path.txt', 'w') as f:
         f.write(path)
         f.close()
+
