@@ -6,9 +6,9 @@ from PyQt5.QtCore import Qt, QUrl
 from funciones_interfaz import *
 from PyQt5 import QtMultimedia, QtWidgets, uic
 
-class Window_Player(QWidget):
+class Window_Player_2(QWidget):
     def __init__(self):
-        super(Window_Player,self).__init__()
+        super(Window_Player_2,self).__init__()
         
         self.setWindowTitle("Media Player")
         #self.setGeometry(350,100,1100,700)
@@ -16,8 +16,6 @@ class Window_Player(QWidget):
 
         
         self.create_player()
-
-        self.show()
 
     ##IIIIMPORTANT (metodo a incorporar)
     def create_player(self):
@@ -100,7 +98,7 @@ sys.exit(app.exec_()) '''
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Window_Player()
+    ex = Window_Player_2()
     sys.exit(app.exec_())
 
     

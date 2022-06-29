@@ -80,11 +80,10 @@ class MyWindow(QtWidgets.QMainWindow):
 
     #Cambiar a segunda pantalla
     def cambiarSegundaVentana(self):
-        self.close()
         self.segunda_ventana = QApplication(sys.argv)
         self.wp= Window_Player()
-        self.wp.__init__()
-        self.wp
+        #self.wp.__init__()
+        self.wp.show()
 
         #Boton siguiente
         #self.btnSiguiente2.clicked.connect(self.cambiarTerceraVentana)

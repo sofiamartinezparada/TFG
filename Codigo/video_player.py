@@ -5,6 +5,8 @@ import sys
 from PyQt5.QtCore import Qt, QUrl
 from funciones_interfaz import *
 from PyQt5 import QtMultimedia, QtWidgets, uic
+from video_player2 import Window_Player_2
+
 
 class Window_Player(QWidget):
     def __init__(self):
@@ -17,7 +19,7 @@ class Window_Player(QWidget):
         
         self.create_player()
 
-        self.show()
+        #self.show()
 
     ##IIIIMPORTANT (metodo a incorporar)
     def create_player(self):
@@ -156,27 +158,9 @@ class Window_Player(QWidget):
         
 
     def abrirPlayer(self):
-        self.window = QMainWindow()
-        self.window = uic.loadUi('player.ui')
-        qtRectangle = self.frameGeometry()
-        centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
-        qtRectangle.moveCenter(centerPoint)
-        self.move(qtRectangle.topLeft())
-        self.window.show()
-
-        self.play.setEnabled(True)     
-        self.sec_label.setText('00.00')
-        self.play.setIcon(self.style().standardIcon(QStyle.SP_MediaPlay))
-        self.play.clicked.connect(self.play_video)
-        self.slider.setRange(0,0)
-        self.slider.sliderMoved.connect(self.set_position)
-
-        self.video_widget = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-
-        #Video widget
-        path = get_path()
-        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(path)))
-
+        self.ventana_video = QApplication(sys.argv)
+        self.wp2= Window_Player_2()
+        self.wp2.show()
 
 '''app  = QApplication(sys.argv)
 window = Window_Player()
