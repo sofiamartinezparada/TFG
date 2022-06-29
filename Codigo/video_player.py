@@ -154,7 +154,7 @@ class Window_Player(QWidget):
 
     def next_window(self):
         self.abrirPlayer()
-
+        self.video_audio_texto()
         
 
     def abrirPlayer(self):
@@ -162,12 +162,29 @@ class Window_Player(QWidget):
         self.wp2= Window_Player_2()
         self.wp2.show()
 
-'''app  = QApplication(sys.argv)
-window = Window_Player()
-window.resize(640, 480)
+        '''uic.loadUi('./Interfaz/tercerapantalla.ui', self)
+        qtRectangle = self.frameGeometry()
+        centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())'''
 
-window.show()
-sys.exit(app.exec_()) '''
+    def video_audio_texto(self):
+        audio_path = aislarAudio()
+        num_generado = chunkeador(audio_path)
+        texto = transcribir(num_generado)
+        
+        self.setVisible(False)
+        #abrir ventana textos
+        self.window = QtWidgets.QMainWindow()
+        self.window = uic.loadUi('./Interfaz/tercerapantalla.ui')
+        qtRectangle = self.frameGeometry()
+        bottonright = QApplication.desktop().availableGeometry().bottomRight()
+        qtRectangle.moveCenter(bottonright)
+        self.window.move(qtRectangle.bottomRight())
+        self.window.txt_transcripcion.setText(texto)
+        self.window.show()
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

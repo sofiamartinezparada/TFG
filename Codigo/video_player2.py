@@ -12,10 +12,12 @@ class Window_Player_2(QWidget):
         
         self.setWindowTitle("Media Player")
         #self.setGeometry(350,100,1100,700)
-        self.setMinimumSize(900,600)
+        self.setMinimumSize(700,500)
 
         
         self.create_player()
+        topLeftPoint = QApplication.desktop().availableGeometry().topLeft()
+        self.move(topLeftPoint)
 
     ##IIIIMPORTANT (metodo a incorporar)
     def create_player(self):

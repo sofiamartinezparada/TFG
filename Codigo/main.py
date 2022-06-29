@@ -80,6 +80,7 @@ class MyWindow(QtWidgets.QMainWindow):
 
     #Cambiar a segunda pantalla
     def cambiarSegundaVentana(self):
+        self.setVisible(False)
         self.segunda_ventana = QApplication(sys.argv)
         self.wp= Window_Player()
         #self.wp.__init__()
