@@ -187,11 +187,12 @@ class Window_Player(QWidget):
         self.window.txt_transcripcion.textChanged.connect(self.textoCambiado)
         self.window.tableWidget.setColumnWidth(0,200)
         self.window.tableWidget.setColumnWidth(1,70)
-        self.window.tableWidget.setColumnWidth(2,70)
+        self.window.tableWidget.setColumnWidth(2,80)
         self.window.tableWidget.setColumnWidth(8,30)
         self.window.tableWidget.setColumnWidth(9,30)
         self.window.tableWidget.setColumnWidth(10,30)
         self.window.insertar_fila.setEnabled(False)
+        self.window.insertar_patrones.setEnabled(False)
         self.window.guardar.setEnabled(False)
         
         self.window.show()
@@ -212,7 +213,6 @@ class Window_Player(QWidget):
         #GUARDAR
         #self.window.guardar.clicked.connect(self.verCodigos)
         
-
     def textoCambiado(self):
         path = get_path()
         path = path.replace('/chunks','')
@@ -236,6 +236,7 @@ class Window_Player(QWidget):
         self.window.fila_edit.textChanged.connect(self.cambiado)
         self.window.verbalizada_edit.textChanged.connect(self.cambiado)
         self.window.guardar.setEnabled(True)
+        self.window.insertar_patrones.setEnabled(True)
 
     def loaddata(self):
         row = 0
@@ -274,10 +275,13 @@ class Window_Player(QWidget):
             fila_act = data[i-1]
             for col in range (0, 13):
                 self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(fila_act[col]))
-        
+
+        self.window.insertar_patrones.setEnabled(True)
+
     def insert_patrones(self):
         data = self.read_data_table()
         new_data = add_patrones(data)
+        new_data = check_positions(new_data)
         self.window.tableWidget.setRowCount(0)
         self.window.tableWidget.setRowCount(len(new_data))
         for i in range (0, len(new_data)):
@@ -286,7 +290,8 @@ class Window_Player(QWidget):
             print('--------')
             for col in range (0, 13):
                 self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(str(new_action[col])))
-
+        
+        self.window.insertar_patrones.setEnabled(False)
 
 
 

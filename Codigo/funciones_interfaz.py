@@ -137,7 +137,7 @@ def dividir_texto(texto):
     texto = texto.replace('desembrago', 'desembrague')
     texto = texto.replace('baja', 'bajo')
     action_verbalizada = ["preparo rotonda","rotonda media","rotonda cerca","en rotonda","coche medio","coche cerca","uno libre","uno coches","uno viene","dos libre","dos cohes","tres libre","tres coches","freno","freno suelto","acelero","acelero mantengo","levanto pie acelerador","gira izquierda","girar derecha","recto","intermitente izquierda","intermitente izquierda off","intermitente derecha","intermitente derecha off","lado izquierda libre","lado izquierda ocupado","lado derecha libre","lado derecha ocupado","atrás libre","atrás ocupado","cambio carril izquierda","cambio carril derecha","salgo rotonda","bajo marcha","bajo marcha","bajo marcha","baje marcha","subo marcha","sube marcha","suba marcha","subo marcha","incidente indefinido","embrago","desembrague","mira frente","retrovisor central","mira izquierda","mira retrovisor izquierdo","mira derecha","mira retrovisor derecho","miro detrás","sonido dentro","sonido fuera"]
-    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","pulso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambir derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
+    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","piso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambir derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
     array_codes = ["APROX","RND-MD","RND-NR","RND-IN","CAR-MD","CAR-NR","L-FREE","L-FREE","L-BUSY","F-FREE","F-BUSY","R-FREE","R-BUSY","B-ON","B-OFF","T-ON","T-HOLD","T-OFF","TURN-L","TURN-R","STR","LB-ON","LB-OFF","RB-ON","LB-OFF","LV-FREE","LV-BUSY","RV-FREE","RV-BUSY","BK-FREE","BK-BUSY","CHG-L","CHG-R","RND-EXIT","GD","GD","GD","GD","GU","GU","GU","GU","INCIDENT","G-ON","G-OFF","FV","FV-Mirror","LV","LV-Mirror","RV","RV-Mirror","BV","IN-S","OUT-S"]
 
     for i in range (len(array_codes)):
@@ -157,8 +157,9 @@ def dividir_texto(texto):
     return array_return
 
 def comprobar_verbalizada(verbalizada):
+
     action_verbalizada = ["preparo rotonda","rotonda media","rotonda cerca","en rotonda","coche medio","coche cerca","uno libre","uno coches","uno viene","dos libre","dos cohes","tres libre","tres coches","freno","freno suelto","acelero","acelero mantengo","levanto pie acelerador","gira izquierda","girar derecha","recto","intermitente izquierda","intermitente izquierda off","intermitente derecha","intermitente derecha off","lado izquierda libre","lado izquierda ocupado","lado derecha libre","lado derecha ocupado","atrás libre","atrás ocupado","cambio carril izquierda","cambio carril derecha","salgo rotonda","bajo marcha","bajo marcha","bajo marcha","baje marcha","subo marcha","sube marcha","suba marcha","subo marcha","incidente indefinido","embrago","desembrague","mira frente","retrovisor central","mira izquierda","mira retrovisor izquierdo","mira derecha","mira retrovisor derecho","miro detrás","sonido dentro","sonido fuera"]
-    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","pulso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambir derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
+    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","piso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambir derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
     array_codes = ["APROX","RND-MD","RND-NR","RND-IN","CAR-MD","CAR-NR","L-FREE","L-FREE","L-BUSY","F-FREE","F-BUSY","R-FREE","R-BUSY","B-ON","B-OFF","T-ON","T-HOLD","T-OFF","TURN-L","TURN-R","STR","LB-ON","LB-OFF","RB-ON","LB-OFF","LV-FREE","LV-BUSY","RV-FREE","RV-BUSY","BK-FREE","BK-BUSY","CHG-L","CHG-R","RND-EXIT","GD","GD","GD","GD","GU","GU","GU","GU","INCIDENT","G-ON","G-OFF","FV","FV-Mirror","LV","LV-Mirror","RV","RV-Mirror","BV","IN-S","OUT-S"]
     for i in range (0, len(action_verbalizada)):
         if verbalizada == action_verbalizada[i]:
@@ -201,7 +202,7 @@ def add_patrones(data):
                 vel_av = None
                 vel_av = velocidad_patron_marcha(verb, cod)
                 if vel_av != None:
-                    data[counter_vel] = [verb,'',cod,'',vel_av,'','','','','','','','']
+                    data[counter_vel] = [verb,accion[1],cod,accion[3],vel_av,accion[5],accion[6],accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
     
     print(data)
     return data
@@ -222,3 +223,37 @@ def check_siguiente_cambio(data, i):
         return True
     else:
         return False
+
+def check_positions(data):
+    three_codes = ['APROX','RND-IN','RND-EXIT']
+    contador_ok = 0
+    index_aprox = None
+    index_in = None
+    index_out = None
+    for i in range (0,len(data)):
+        d = data[i]
+        if d[2] in three_codes:
+            contador_ok = contador_ok +1
+        if d[2] == three_codes[0]:
+            index_aprox = i
+        elif d[2] == three_codes[1]:
+            index_in = i
+        elif d[2] == three_codes[2]:
+            index_out = i
+    if contador_ok == 3:
+        for i in range (0,len(data)):
+            accion = data[i]
+            if index_aprox <= i < index_in:
+                #aprox
+                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'Aprox',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
+            elif index_in <= i < index_out:
+                #dentro
+                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'Dentro',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
+            elif index_out <= i :
+                #saliendo
+                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'Saliendo',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
+
+            data[i] = pos_added
+        
+    return data
+
