@@ -190,15 +190,25 @@ class Window_Player(QWidget):
         self.window.tableWidget.setColumnWidth(8,30)
         self.window.tableWidget.setColumnWidth(9,30)
         self.window.tableWidget.setColumnWidth(10,30)
-
+        self.window.insertar_fila.setEnabled(False)
+        self.window.guardar.setEnabled(False)
+        
         self.window.show()
 
+    def cambiado(self):
+        inT = self.window.fila_edit.text()
+        fiT = self.window.verbalizada_edit.text()
+        if (inT != ''):
+            if (fiT != ''):
+                self.window.insertar_fila.setEnabled(True)
+    
     def manejo_tercera_ventana(self):
         self.window.obtener.clicked.connect(self.excel)
         self.window.insertar_fila.clicked.connect(self.insert_row)
-
-        pass
-
+        self.window.ver_codigos.clicked.connect(self.verCodigos)
+        #GUARDAR
+        #self.window.guardar.clicked.connect(self.verCodigos)
+        
 
     def textoCambiado(self):
         path = get_path()
@@ -219,8 +229,10 @@ class Window_Player(QWidget):
         with open(path, 'w') as f:
             f.write(texto)
             f.close()
-        
         self.loaddata()
+        self.window.fila_edit.textChanged.connect(self.cambiado)
+        self.window.verbalizada_edit.textChanged.connect(self.cambiado)
+        self.window.guardar.setEnabled(True)
 
     def loaddata(self):
         row = 0
@@ -239,21 +251,17 @@ class Window_Player(QWidget):
         self.window.tableWidget.setRowCount(len(data)+1)
         fila = int(self.window.fila_edit.text())
         verbalizada = self.window.verbalizada_edit.text()
+        act = comprobar_verbalizada(verbalizada)
         self.window.tableWidget.setItem(fila-1,0, QtWidgets.QTableWidgetItem(verbalizada))
         for col in range(1,13):
             self.window.tableWidget.setItem(fila-1,col, QtWidgets.QTableWidgetItem(''))
+        if act != None:
+            self.window.tableWidget.setItem(fila-1,2, QtWidgets.QTableWidgetItem(act))
 
         for i in range (fila, len(data)+1):
             fila_act = data[i-1]
             for col in range (0, 13):
                 self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(fila_act[col]))
-
-    '''def ins_row(self):
-        row = self.fm.fila.text()
-        verb = self.fm.verbalizada.text()
-
-        self.window.tableWidget.setItem(int(row),0, QtWidgets.QTableWidgetItem(verb))
-        self.fm.close()'''
 
     def read_data_table(self):
         data = []
@@ -270,6 +278,16 @@ class Window_Player(QWidget):
                 info_fila.append(text_widget)
             data.append(info_fila)
         return data
+
+    def verCodigos(self):
+        self.absa = QtWidgets.QMainWindow()
+        self.absa = uic.loadUi('./Interfaz/anexo.ui')
+        qtRectangle = self.frameGeometry()
+        centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        self.move(qtRectangle.topLeft())
+        self.absa.show()
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Window_Player()
