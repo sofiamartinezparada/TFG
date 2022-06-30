@@ -65,9 +65,9 @@
    <widget class="QPushButton" name="ver_codigos">
     <property name="geometry">
      <rect>
-      <x>500</x>
-      <y>680</y>
-      <width>201</width>
+      <x>640</x>
+      <y>220</y>
+      <width>181</width>
       <height>51</height>
      </rect>
     </property>
@@ -193,7 +193,7 @@
      <rect>
       <x>360</x>
       <y>680</y>
-      <width>141</width>
+      <width>111</width>
       <height>51</height>
      </rect>
     </property>
@@ -245,6 +245,19 @@
       <width>200</width>
       <height>20</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="insertar_patrones">
+    <property name="geometry">
+     <rect>
+      <x>480</x>
+      <y>680</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Insertar Automáticos</string>
     </property>
    </widget>
   </widget>

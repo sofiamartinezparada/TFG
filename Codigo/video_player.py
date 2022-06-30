@@ -3,6 +3,7 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 import sys
 from PyQt5.QtCore import Qt, QUrl
+from patrones import *
 from funciones_interfaz import *
 from PyQt5 import QtMultimedia, QtWidgets, uic
 from video_player2 import Window_Player_2
@@ -206,6 +207,8 @@ class Window_Player(QWidget):
         self.window.obtener.clicked.connect(self.excel)
         self.window.insertar_fila.clicked.connect(self.insert_row)
         self.window.ver_codigos.clicked.connect(self.verCodigos)
+        self.window.insertar_patrones.clicked.connect(self.insert_patrones)
+
         #GUARDAR
         #self.window.guardar.clicked.connect(self.verCodigos)
         
@@ -258,11 +261,34 @@ class Window_Player(QWidget):
             self.window.tableWidget.setItem(fila-1,col, QtWidgets.QTableWidgetItem(''))
         if act != None:
             self.window.tableWidget.setItem(fila-1,2, QtWidgets.QTableWidgetItem(act))
+        if act == "GD":
+            vel = velocidad_patron_marcha(verbalizada, act)
+            if vel != None:
+                self.window.tableWidget.setItem(fila-1,4, QtWidgets.QTableWidgetItem(vel))
+        elif act == "GU":
+            vel = velocidad_patron_marcha(verbalizada, act)
+            if vel != None:
+                self.window.tableWidget.setItem(fila-1,4, QtWidgets.QTableWidgetItem(str(vel)))
 
         for i in range (fila, len(data)+1):
             fila_act = data[i-1]
             for col in range (0, 13):
                 self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(fila_act[col]))
+        
+    def insert_patrones(self):
+        data = self.read_data_table()
+        new_data = add_patrones(data)
+        self.window.tableWidget.setRowCount(0)
+        self.window.tableWidget.setRowCount(len(new_data))
+        for i in range (0, len(new_data)):
+            new_action = new_data[i]
+            print(new_action)
+            print('--------')
+            for col in range (0, 13):
+                self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(str(new_action[col])))
+
+
+
 
     def read_data_table(self):
         data = []

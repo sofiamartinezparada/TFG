@@ -43,12 +43,12 @@ def get_by_section(section):
     connection.close()
     return array_rotondas
 
-def validation_percent(marcha, section):
+def validation_percent(verbalizada, action):
     connection = sqlite3.connect('rotondas.db')
     cursor = connection.cursor()
     
     #Cases where the parameters apear
-    consulta = 'SELECT COUNT(*) from Acciones WHERE pos = \''+ section +'\' AND verbalizada LIKE \'%' +marcha+ '%\''
+    consulta = 'SELECT COUNT(*) from Acciones WHERE accion = \''+ action +'\' AND verbalizada LIKE \'%' +verbalizada+ '%\''
     cursor.execute(consulta)
     number_cases = (cursor.fetchone())[0]
 
@@ -67,12 +67,12 @@ def validation_percent(marcha, section):
     else:
         return False
 
-def velocidades_marcha(marcha, section):
+def velocidades_marcha(verbalizada, action):
     connection = sqlite3.connect('rotondas.db')
     cursor = connection.cursor()
     #consulta = 'SELECT vel_actual from Acciones WHERE verbalizada LIKE \'%' +marcha+ '%\' AND vel_actual NOT NULL'
 
-    consulta = 'SELECT avg(vel_actual) from Acciones WHERE verbalizada LIKE \'%' +marcha+ '%\' AND vel_actual NOT NULL AND pos = \'' + section + '\''
+    consulta = 'SELECT avg(vel_actual) from Acciones WHERE accion = \''+ action+ '\'AND vel_actual NOT NULL AND verbalizada LIKE \'%' + verbalizada + '%\''
 
     cursor.execute(consulta)
     info = (cursor.fetchone())[0]
@@ -83,14 +83,13 @@ def velocidades_marcha(marcha, section):
 
     media = numpy.mean(velocidades)
     '''
+    #validation = validation_percent(marcha,section)
 
-    validation = validation_percent(marcha,section)
-
-    inf = (info , validation)
+    #inf = (info , validation)
     #return media
     cursor.close()
     connection.close()
-    return inf
+    return info
 
 def get_cambios():
     connection = sqlite3.connect('rotondas.db')
@@ -135,8 +134,6 @@ def porcentaje_embragar(anteriores):
 
     return percent
 
-
-
 def embragar():
     cambs = get_cambios()
     anteriores = get_anterior_cambio(cambs)
@@ -145,3 +142,35 @@ def embragar():
 
     return porcentaje
 
+'''
+deceleracion_tercera = velocidades_marcha('tercera', 'Aprox')
+print(deceleracion_tercera)
+
+deceleracion_segunda = velocidades_marcha('segunda', 'Aprox')
+print(deceleracion_segunda)
+
+deceleracion_primera = velocidades_marcha('primera', 'Dentro')
+print(deceleracion_primera)
+
+aceleracion_segunda = velocidades_marcha('segunda', 'Dentro')
+print(aceleracion_segunda)
+'''
+
+def velocidad_patron_marcha(verbalizada, act):
+    verb = ''
+    marchas = ['primera', 'segunda', 'tercera', 'cuarta']
+    parte = verbalizada.split(' ')
+    for marcha in marchas:
+        for p in parte:
+            if marcha == p:
+                verb = marcha
+    valid = validation_percent(verb, act)
+    if valid:
+        vel = velocidades_marcha(verb, act)
+        vel = round(vel, 2)
+        return vel
+    else:
+        return None
+
+'''print(velocidad_patron_marcha('bajo segunda', 'GD'))
+print(velocidad_patron_marcha('bajo primera', 'GD'))'''

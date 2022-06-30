@@ -4,6 +4,7 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from patrones import * 
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import speech_recognition as sr
@@ -16,15 +17,13 @@ def cargarVideo(path):
     url = QtCore.QUrl.fromLocalFile(path)
     return url
 
-
 def cortar(path, valorInicio, valorFin):
     if valorInicio == '' and valorFin == '':
         return path
     else:
         valorInicio =  transformSec(valorInicio)
         valorFin = transformSec(valorFin)
-        print(valorInicio)
-        print(valorFin)
+
         with VideoFileClip(path) as video:
             new = video.subclip(valorInicio, valorFin)
             nombre_nuevo = path.replace(".mp4", "_cortado.mp4")
@@ -132,8 +131,6 @@ def pln(texto):
         new_text = new_text[1 : : ]
     return new_text
 
-
-
 def dividir_texto(texto):
     texto = pln(texto)
     array_return = []
@@ -154,12 +151,10 @@ def dividir_texto(texto):
     division_1 = texto.split('>')
 
     for div_1 in division_1:
-        print(div_1)
         di = div_1.split('<')
         array_return.append(di)
     
     return array_return
-
 
 def comprobar_verbalizada(verbalizada):
     action_verbalizada = ["preparo rotonda","rotonda media","rotonda cerca","en rotonda","coche medio","coche cerca","uno libre","uno coches","uno viene","dos libre","dos cohes","tres libre","tres coches","freno","freno suelto","acelero","acelero mantengo","levanto pie acelerador","gira izquierda","girar derecha","recto","intermitente izquierda","intermitente izquierda off","intermitente derecha","intermitente derecha off","lado izquierda libre","lado izquierda ocupado","lado derecha libre","lado derecha ocupado","atrás libre","atrás ocupado","cambio carril izquierda","cambio carril derecha","salgo rotonda","bajo marcha","bajo marcha","bajo marcha","baje marcha","subo marcha","sube marcha","suba marcha","subo marcha","incidente indefinido","embrago","desembrague","mira frente","retrovisor central","mira izquierda","mira retrovisor izquierdo","mira derecha","mira retrovisor derecho","miro detrás","sonido dentro","sonido fuera"]
@@ -173,3 +168,57 @@ def comprobar_verbalizada(verbalizada):
             return array_codes[i]
     else:
         return None
+
+def add_patrones(data):
+    for i in range(0, len(data)):
+        accion = data[i]
+        verb = accion[0]
+        cod = accion[2]
+        vel = accion[4]
+        if cod == 'GU' or cod == 'GD':
+            chekeo_1 = check_anterior_cambio(data, i)
+            chekeo_2 = check_siguiente_cambio(data, i) 
+            counter_vel = i
+            if chekeo_1 == False and chekeo_2 == False:
+                index = i
+                embr = ['embrago','','G-ON','','','','','','','','','','']
+                data.insert(index, embr)
+                index = i+2
+                embr = ['desembrague','','G-OFF','','','','','','','','','','']
+                data.insert(index, embr)
+                counter_vel = i+1
+            elif chekeo_1 == False and chekeo_2 == True:
+                index = i
+                embr = ['embrago','','G-ON','','','','','','','','','','']
+                data.insert(index, embr)
+                counter_vel = i+1
+            elif chekeo_1 == True and chekeo_2 == False:
+                index = i+1
+                embr = ['desembrague','','G-OFF','','','','','','','','','','']
+                data.insert(index, embr)
+                counter_vel = i
+            if vel == '':
+                vel_av = None
+                vel_av = velocidad_patron_marcha(verb, cod)
+                if vel_av != None:
+                    data[counter_vel] = [verb,'',cod,'',vel_av,'','','','','','','','']
+    
+    print(data)
+    return data
+
+
+def check_anterior_cambio(data, i):
+    accion_anterior = data[i-1]
+    cod_anterior = accion_anterior[2]
+    if cod_anterior == 'G-ON':
+        return True
+    else:
+        return False
+
+def check_siguiente_cambio(data, i):
+    accion_anterior = data[i+1]
+    cod_siguiente = accion_anterior[2]
+    if cod_siguiente == 'G-OFF':
+        return True
+    else:
+        return False
