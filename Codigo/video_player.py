@@ -240,8 +240,11 @@ class Window_Player(QWidget):
         fila = int(self.window.fila_edit.text())
         verbalizada = self.window.verbalizada_edit.text()
         self.window.tableWidget.setItem(fila-1,0, QtWidgets.QTableWidgetItem(verbalizada))
-        for i in range (fila, len(data)):
-            fila_act = data[i]
+        for col in range(1,13):
+            self.window.tableWidget.setItem(fila-1,col, QtWidgets.QTableWidgetItem(''))
+
+        for i in range (fila, len(data)+1):
+            fila_act = data[i-1]
             for col in range (0, 13):
                 self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(fila_act[col]))
 
