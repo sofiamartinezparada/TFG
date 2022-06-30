@@ -26,7 +26,7 @@ class Window_Player(QWidget):
     ##IIIIMPORTANT (metodo a incorporar)
     def create_player(self):
         self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-
+        self.setWindowTitle('TFG -Sofía Martínez Parada')
         #Video widget
         video_widget = QVideoWidget()
         path = get_path()
@@ -282,8 +282,6 @@ class Window_Player(QWidget):
         self.window.tableWidget.setRowCount(len(new_data))
         for i in range (0, len(new_data)):
             new_action = new_data[i]
-            print(new_action)
-            print('--------')
             for col in range (0, 13):
                 self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(str(new_action[col])))
         

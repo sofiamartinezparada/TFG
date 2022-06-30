@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string/>
+   <string>TFG -Sofía Martínez Parada</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTextEdit" name="txt_transcripcion">

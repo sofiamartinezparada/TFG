@@ -1,3 +1,4 @@
+from csv import excel
 from read_excel_files import main_read
 from database import make_queries, create_database
 from funciones_interfaz import *
@@ -31,8 +32,6 @@ por_embrague = embragar()
 print(por_embrague)'''
 
 
-
-
 #INTERFAZ
 class MyWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -56,17 +55,19 @@ class MyWindow(QtWidgets.QMainWindow):
         self.btnSiguiente1.clicked.connect(self.cambiarSegundaVentana)
 
         
-
-    
         # Inserta un vídeo desde una ruta local
     def insertarVideoLocal(self):
         a = self.openDialogBox()
         path = os.path.abspath(str(a[0]))
         self.ruta.setText(path)
         if path.endswith('.mp4'):
-            self.label_warning.setVisible(False)
-            self.btnSiguiente1.setEnabled(True)
+            
             write_path(path)
+            existe = self.comprobar_si_existe_en_excel()
+            if existe == False:
+                self.label_warning.setVisible(False)
+                self.btnSiguiente1.setEnabled(True)
+
         else:
             self.label_warning.setVisible(True)
 
@@ -76,6 +77,26 @@ class MyWindow(QtWidgets.QMainWindow):
     def openDialogBox(self):
         filename = QtWidgets.QFileDialog.getOpenFileName()
         return filename
+
+    #comprobar si maniobra ya existe en el excel
+    def comprobar_si_existe_en_excel(self):
+        path = get_path().split('/')
+        absa1 = len(path)
+        absa = path[absa1-1]
+        rot = absa.split('.')[1].replace('ROT','Rot')
+        fech = absa.split('____')[0].replace('_','-')
+        nombre = rot + ' ' + fech
+
+        excelpath = './Info/Rotondas supervisadas v7.xlsx'
+        excel_file = xl.load_workbook(excelpath)
+        sheets = excel_file.sheetnames
+
+        if nombre in sheets:
+            self.label_warning.setText('Video ya analizado, seleccione otro.')
+            self.label_warning.setVisible(True)
+            return True
+        else:
+            return False
 
 
     #Cambiar a segunda pantalla

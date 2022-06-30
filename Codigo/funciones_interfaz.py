@@ -206,7 +206,6 @@ def add_patrones(data):
                 if vel_av != None:
                     data[counter_vel] = [verb,accion[1],cod,accion[3],vel_av,accion[5],accion[6],accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
     
-    print(data)
     return data
 
 
@@ -266,10 +265,8 @@ def write_data_file(data):
         f.close()
     
 def write_on_excel(data):
-    
     path = './Info/Rotondas supervisadas v7.xlsx'
     excel_file = xl.load_workbook(path)
-
 
     #./Info/2021_07_06____11_25____1_Subjetiva.ROT 1/chunks
     absa = (get_path().split('/'))[2]
@@ -277,16 +274,8 @@ def write_on_excel(data):
     fech = absa.split('____')[0].replace('_','-')
     nombre = rot + ' ' + fech
     #Number of sheets in the excel file
-    sheets = excel_file.sheetnames
 
-    if nombre in sheets:
-        actualizar_hoja(excel_file, data, nombre)
-    else:
-        add_hoja(excel_file , data, nombre)
-
-
-def actualizar_hoja(excel_file, data, nombre):
-    pass
+    add_hoja(excel_file , data, nombre)
 
 def add_hoja(excel_file, data, nombre):
     excel_file.create_sheet(nombre)

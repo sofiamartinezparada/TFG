@@ -28,7 +28,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Pensamiento en voz alta</string>
+   <string>TFG -Sofía Martínez Parada</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="minimumSize">
@@ -75,9 +75,9 @@ para la creación de reglas de conducción de vehículos autónomos.</string>
    <widget class="QLabel" name="label_warning">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>180</x>
       <y>390</y>
-      <width>251</width>
+      <width>661</width>
       <height>51</height>
      </rect>
     </property>
@@ -90,7 +90,8 @@ para la creación de reglas de conducción de vehículos autónomos.</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(252, 1, 7);</string>
+     <string notr="true">color: rgb(252, 1, 7);
+</string>
     </property>
     <property name="text">
      <string> ¡¡¡ FORMATO ERRÓNEO !!!</string>
@@ -176,7 +177,7 @@ p, li { white-space: pre-wrap; }
 - Agregar información que pueda faltar.
 - Observar de forma simultánea el vídeo y el texto extraído.
 - Obtener códigos de acción de conducción.
-- Introducir acciones mediante patrones previamente detectados.
+- Introducir acciones automáticamente mediante patrones previamente detectados.
 
 
 
@@ -198,7 +199,7 @@ A continuación, debe seleccionar la nueva grabación de su ruta, debe estar en 
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: blue</string>
+     <string notr="true">color: white</string>
     </property>
     <property name="text">
      <string>Trabajo de Fin de Grado de Sofía Martínez Parada</string>
