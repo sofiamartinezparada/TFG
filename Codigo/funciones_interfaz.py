@@ -2,6 +2,8 @@
 from PyQt5 import QtCore
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import speech_recognition as sr
@@ -117,3 +119,48 @@ def transcribir(numero_de_chunks):
         f.close()
     return texto_devolver
 
+def pln(texto):
+    texto.lower()
+    stop_words = stopwords.words('spanish')
+    words = word_tokenize(str(texto))
+
+    new_text = ""
+    for w in words:
+        if w not in stop_words:
+            new_text = new_text + " " + w
+    return new_text
+
+
+
+def dividir_texto(texto):
+
+    texto = pln(texto)
+    array_return = []
+    texto = texto.replace('desembrago', 'desembrague')
+    texto = texto.replace('baja', 'bajo')
+    action_verbalizada = ["preparo rotonda","rotonda media","rotonda cerca","en rotonda","coche medio","coche cerca","uno libre","uno coches","uno viene","dos libre","dos cohes","tres libre","tres coches","freno","freno suelto","acelero","acelero mantengo","levanto pie acelerador","gira izquierda","girar derecha","recto","intermitente izquierda","intermitente izquierda off","intermitente derecha","intermitente derecha off","lado izquierda libre","lado izquierda ocupado","lado derecha libre","lado derecha ocupado","atrás libre","atrás ocupado","cambio carril izquierda","cambio carril derecha","salgo rotonda","bajo marcha","bajo marcha","bajo marcha","baje marcha","subo marcha","sube marcha","suba marcha","subo marcha","incidente indefinido","embrago","desembrague","mira frente","retrovisor central","mira izquierda","mira retrovisor izquierdo","mira derecha","mira retrovisor derecho","miro detrás","sonido dentro","sonido fuera"]
+    #action_verbalizada = ["preparo rotonda","rotonda media","rotonda cerca","en rotonda","coche medio","coche cerca","uno libre","uno coches","uno viene","dos libre","dos cohes","tres libre","tres coches","freno","freno suelto","acelero","acelero mantengo","levanto pie acelerador","girar izquierda","girar derecha","recto","intermitente izquierda on","intermitente izquierda off","intermitente derecha on","intermitente derecha off","lado izquierda libre","lado izquierda ocupado","lado derecha libre","lado derecha ocupado","atrás libre","atrás ocupado","cambio carril izquierda","cambio carril derecha","salgo rotonda","bajo marcha","subo marcha","incidente indefinido","embrago","desembrago","mira frente","mira retrovisor central","mira izquierda","mira retrovisor izquierdo","mira derecha","mira retrovisor derecho","miro detrás","sonido dentro","sonido fuera"]
+    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","pulso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambir derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
+    array_codes = ["APROX","RND-MD","RND-NR","RND-IN","CAR-MD","CAR-NR","L-FREE","L-FREE","L-BUSY","F-FREE","F-BUSY","R-FREE","R-BUSY","B-ON","B-OFF","T-ON","T-HOLD","T-OFF","TURN-L","TURN-R","STR","LB-ON","LB-OFF","RB-ON","LB-OFF","LV-FREE","LV-BUSY","RV-FREE","RV-BUSY","BK-FREE","BK-BUSY","CHG-L","CHG-R","RND-EXIT","GD","GD","GD","GD","GU","GU","GU","GU","INCIDENT","G-ON","G-OFF","FV","FV-Mirror","LV","LV-Mirror","RV","RV-Mirror","BV","IN-S","OUT-S"]
+
+    for i in range (len(array_codes)):
+        str_aux = action_verbalizada[i] + " <" + array_codes[i] + ">"
+        str_aux_2 = action_verbalizada_2[i] + " <" + array_codes[i] + ">"
+
+        if (texto.find(action_verbalizada[i]) != -1):
+            texto = texto.replace(action_verbalizada[i], str_aux)
+        elif (texto.find(action_verbalizada_2[i] )!= -1):
+            texto = texto.replace(action_verbalizada_2[i], str_aux_2)
+    division_1 = texto.split('>')
+
+    for div_1 in division_1:
+        print(div_1)
+        di = div_1.split('<')
+        array_return.append(di)
+    
+    return array_return
+
+
+'''tex = " preparo rotonda levanto pie acelerador embrago bajo segunda desembrago mira izquierda intermitente izquierda freno embrago baja primera vienen acelero rotonda gire izquierda rotonda cambio carril rotonda embrago subo segunda gira izquierda rotonda intermitente derecha retrovisor central derecha rotonda cambiar carril fino derecha rotonda salgo rotonda intermitente enderezo embrago subo Tercera acelero"
+tex = pln(tex)
+dividir_texto(tex)'''

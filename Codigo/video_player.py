@@ -8,6 +8,7 @@ from PyQt5 import QtMultimedia, QtWidgets, uic
 from video_player2 import Window_Player_2
 
 
+
 class Window_Player(QWidget):
     def __init__(self):
         super(Window_Player,self).__init__()
@@ -155,7 +156,7 @@ class Window_Player(QWidget):
     def next_window(self):
         self.abrirPlayer()
         self.video_audio_texto()
-        
+        self.manejo_tercera_ventana()
 
     def abrirPlayer(self):
         self.ventana_video = QApplication(sys.argv)
@@ -182,10 +183,90 @@ class Window_Player(QWidget):
         qtRectangle.moveCenter(bottonright)
         self.window.move(qtRectangle.bottomRight())
         self.window.txt_transcripcion.setText(texto)
+        self.window.txt_transcripcion.textChanged.connect(self.textoCambiado)
+        self.window.tableWidget.setColumnWidth(0,200)
+        self.window.tableWidget.setColumnWidth(1,70)
+        self.window.tableWidget.setColumnWidth(2,70)
+        self.window.tableWidget.setColumnWidth(8,30)
+        self.window.tableWidget.setColumnWidth(9,30)
+        self.window.tableWidget.setColumnWidth(10,30)
+
         self.window.show()
 
+    def manejo_tercera_ventana(self):
+        self.window.obtener.clicked.connect(self.excel)
+        self.window.insertar_fila.clicked.connect(self.insert_row)
+
+        pass
 
 
+    def textoCambiado(self):
+        path = get_path()
+        path = path.replace('/chunks','')
+        path = path + '/texto_transcripto.txt'
+        texto = self.window.txt_transcripcion.toPlainText()
+        with open(path, 'w') as f:
+            f.write(texto)
+            f.close()
+
+    def excel(self):
+        texto = self.window.txt_transcripcion.toPlainText()
+        texto = pln(texto)
+        #ver escrito
+        path = get_path()
+        path = path.replace('/chunks','')
+        path = path + '/texto_transcripto.txt'
+        with open(path, 'w') as f:
+            f.write(texto)
+            f.close()
+        
+        self.loaddata()
+
+    def loaddata(self):
+        row = 0
+        texto = self.window.txt_transcripcion.toPlainText()
+
+        verbalizadas = dividir_texto(texto)
+        self.window.tableWidget.setRowCount(len(verbalizadas)-1)
+        for i in range (len(verbalizadas) -1):
+            verbalizada = verbalizadas[i]
+            self.window.tableWidget.setItem(row,0, QtWidgets.QTableWidgetItem(verbalizada[0]))
+            self.window.tableWidget.setItem(row,2, QtWidgets.QTableWidgetItem(verbalizada[1]))
+            row = row +1
+
+    def insert_row(self):
+        data = self.read_data_table()
+        self.window.tableWidget.setRowCount(len(data)+1)
+        fila = int(self.window.fila_edit.text())
+        verbalizada = self.window.verbalizada_edit.text()
+        self.window.tableWidget.setItem(fila-1,0, QtWidgets.QTableWidgetItem(verbalizada))
+        for i in range (fila, len(data)):
+            fila_act = data[i]
+            for col in range (0, 13):
+                self.window.tableWidget.setItem(i,col, QtWidgets.QTableWidgetItem(fila_act[col]))
+
+    '''def ins_row(self):
+        row = self.fm.fila.text()
+        verb = self.fm.verbalizada.text()
+
+        self.window.tableWidget.setItem(int(row),0, QtWidgets.QTableWidgetItem(verb))
+        self.fm.close()'''
+
+    def read_data_table(self):
+        data = []
+        rowCount = self.window.tableWidget.rowCount()
+        columnCount = self.window.tableWidget.columnCount()
+        for row in range(rowCount):
+            info_fila = []
+            for column in range (0,columnCount):
+                widgetItem = self.window.tableWidget.item(row,column)
+                if widgetItem != None:
+                    text_widget = widgetItem.text()
+                else:
+                    text_widget = ''
+                info_fila.append(text_widget)
+            data.append(info_fila)
+        return data
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Window_Player()

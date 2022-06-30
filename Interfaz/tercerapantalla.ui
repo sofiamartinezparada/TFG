@@ -40,7 +40,7 @@
     <property name="geometry">
      <rect>
       <x>700</x>
-      <y>670</y>
+      <y>680</y>
       <width>121</width>
       <height>51</height>
      </rect>
@@ -65,8 +65,8 @@
    <widget class="QPushButton" name="ver_codigos">
     <property name="geometry">
      <rect>
-      <x>490</x>
-      <y>670</y>
+      <x>500</x>
+      <y>680</y>
       <width>201</width>
       <height>51</height>
      </rect>
@@ -105,6 +105,73 @@
         <height>391</height>
        </rect>
       </property>
+      <column>
+       <property name="text">
+        <string>Accion verbalizada</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Percepcion</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Accion</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Distancia real al ceda el paso (metros)</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Velocidad actual</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Límite velocidad GoogleMaps API</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Posición</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Distancia con coche delante
+1 = media
+2 = cerca</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Zi</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Zc</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Zd</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Coche en Carril izquierda</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Coche en Carril derecho</string>
+       </property>
+      </column>
      </widget>
     </widget>
    </widget>
@@ -119,6 +186,65 @@
     </property>
     <property name="text">
      <string>Texto extraído del vídeo, puede realizar las correcciones oportunas en el siguiente cuadro de texto:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="insertar_fila">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>680</y>
+      <width>141</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Insertar fila</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>680</y>
+      <width>60</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>En la fila:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>700</y>
+      <width>121</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Accion verbalizada:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="fila_edit">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>680</y>
+      <width>41</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="verbalizada_edit">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>700</y>
+      <width>200</width>
+      <height>20</height>
+     </rect>
     </property>
    </widget>
   </widget>
