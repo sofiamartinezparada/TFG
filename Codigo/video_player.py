@@ -104,14 +104,12 @@ class Window_Player(QWidget):
         self.cutBtn.clicked.connect(self.cutVideo)
         self.readyBtn.clicked.connect(self.next_window)
 
-
     def onChanged(self):
         inT = self.initCut.text()
         fiT = self.finCut.text()
         if (inT != ''):
             if (fiT != ''):
                 self.cutBtn.setEnabled(True)
-
 
     def play_video(self):
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
@@ -209,9 +207,7 @@ class Window_Player(QWidget):
         self.window.insertar_fila.clicked.connect(self.insert_row)
         self.window.ver_codigos.clicked.connect(self.verCodigos)
         self.window.insertar_patrones.clicked.connect(self.insert_patrones)
-
-        #GUARDAR
-        #self.window.guardar.clicked.connect(self.verCodigos)
+        self.window.guardar.clicked.connect(self.guardar_en_excel)
         
     def textoCambiado(self):
         path = get_path()
@@ -293,8 +289,6 @@ class Window_Player(QWidget):
         
         self.window.insertar_patrones.setEnabled(False)
 
-
-
     def read_data_table(self):
         data = []
         rowCount = self.window.tableWidget.rowCount()
@@ -320,6 +314,12 @@ class Window_Player(QWidget):
         self.move(qtRectangle.topLeft())
         self.absa.show()
 
+    def guardar_en_excel(self):
+        data = self.read_data_table()
+        #Write on file
+        write_data_file(data)
+        write_on_excel(data)
+        
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Window_Player()

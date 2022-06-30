@@ -1,14 +1,16 @@
-
 from PyQt5 import QtCore
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+import os
+import openpyxl as xl
+from openpyxl.styles import Alignment, Font
 from patrones import * 
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import speech_recognition as sr
-import os
+
 
 
 #------------ Segunda Ventana ------------#
@@ -245,15 +247,90 @@ def check_positions(data):
             accion = data[i]
             if index_aprox <= i < index_in:
                 #aprox
-                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'Aprox',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
+                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'APROX',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
             elif index_in <= i < index_out:
                 #dentro
-                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'Dentro',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
+                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'DENTRO',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
             elif index_out <= i :
                 #saliendo
-                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'Saliendo',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
-
+                pos_added = [accion[0],accion[1],accion[2],accion[3],accion[4],accion[5],'SALIENDO',accion[7],accion[8],accion[9],accion[10],accion[11],accion[12]]
             data[i] = pos_added
         
     return data
+
+def write_data_file(data):
+    path = get_path().replace('/chunks','/procesado.txt')
+    data = str(data).replace('], [', '\n-----------------------------\n')
+    with open(path, 'w') as f:
+        f.write(data)
+        f.close()
+    
+def write_on_excel(data):
+    
+    path = './Info/Rotondas supervisadas v7.xlsx'
+    excel_file = xl.load_workbook(path)
+
+
+    #./Info/2021_07_06____11_25____1_Subjetiva.ROT 1/chunks
+    absa = (get_path().split('/'))[2]
+    rot = absa.split('.')[1].replace('ROT','Rot')
+    fech = absa.split('____')[0].replace('_','-')
+    nombre = rot + ' ' + fech
+    #Number of sheets in the excel file
+    sheets = excel_file.sheetnames
+
+    if nombre in sheets:
+        actualizar_hoja(excel_file, data, nombre)
+    else:
+        add_hoja(excel_file , data, nombre)
+
+
+def actualizar_hoja(excel_file, data, nombre):
+    pass
+
+def add_hoja(excel_file, data, nombre):
+    excel_file.create_sheet(nombre)
+    
+    active_sheet = excel_file[nombre]
+    excel_file.active = active_sheet
+
+    fecha1 = nombre.split(' ')[2]
+    fecha_spliteada = fecha1.split('-')
+    fecha = fecha_spliteada[2]+'/' +fecha_spliteada[1]+'/'+ fecha_spliteada[0]
+    active_sheet.append((fecha,''))
+
+    active_sheet.append(('Acciones verbalizadas','x1', 'x2','x3','x4','x5','x6','x7','x8','x9','x10','x11','x12'))
+    active_sheet.append(('ROTONDA','Percepción', 'Acción','Distancia real al ceda el paso (metros)','Velocidad actual','Límite velocidad GoogleMaps API','Posición','Distancia con coche delante 1 = media 2 = cerca','Zi','Zc','Zd','Coche en Carril izquierdo','Coche en Carril derecho'))
+    for act in data:
+        active_sheet.append(act)
+
+    title_font2 = Font(size=12, bold=True, color= '000000')
+    cell_alignment =  Alignment(horizontal='center', vertical='center')
+    max_columns = active_sheet.max_column +1
+
+    palero= 0
+     #Fixs the column sizes
+    for col in active_sheet.columns:
+        if palero == 0:
+            max_length = 0
+            column = col[0].column_letter # Get the column name
+            for cell in col:
+                try: # Necessary to avoid error on empty cells
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+            adjusted_width = (max_length + 2) * 1.1
+            active_sheet.column_dimensions[column].width = adjusted_width
+        palero = 8
+
+    for col in range(1,max_columns):
+        active_sheet.cell(row = 1, column=col).font = title_font2
+        active_sheet.cell(row = 2, column=col).font = title_font2
+        active_sheet.cell(row = 3, column=col).font = title_font2
+        active_sheet.cell(row = 1, column=col).alignment = cell_alignment
+        active_sheet.cell(row = 2, column=col).alignment = cell_alignment
+        active_sheet.cell(row = 3, column=col).alignment = cell_alignment
+
+    excel_file.save(filename= './Info/Rotondas supervisadas v7.xlsx')
 
