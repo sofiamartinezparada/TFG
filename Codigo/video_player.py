@@ -251,6 +251,7 @@ class Window_Player(QWidget):
         self.window.tableWidget.setRowCount(len(data)+1)
         fila = int(self.window.fila_edit.text())
         verbalizada = self.window.verbalizada_edit.text()
+        verbalizada = pln(verbalizada)
         act = comprobar_verbalizada(verbalizada)
         self.window.tableWidget.setItem(fila-1,0, QtWidgets.QTableWidgetItem(verbalizada))
         for col in range(1,13):

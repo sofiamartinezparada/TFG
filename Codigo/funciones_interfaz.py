@@ -128,6 +128,8 @@ def pln(texto):
     for w in words:
         if w not in stop_words:
             new_text = new_text + " " + w
+    if new_text[0] == " ":
+        new_text = new_text[1 : : ]
     return new_text
 
 
@@ -165,9 +167,9 @@ def comprobar_verbalizada(verbalizada):
     array_codes = ["APROX","RND-MD","RND-NR","RND-IN","CAR-MD","CAR-NR","L-FREE","L-FREE","L-BUSY","F-FREE","F-BUSY","R-FREE","R-BUSY","B-ON","B-OFF","T-ON","T-HOLD","T-OFF","TURN-L","TURN-R","STR","LB-ON","LB-OFF","RB-ON","LB-OFF","LV-FREE","LV-BUSY","RV-FREE","RV-BUSY","BK-FREE","BK-BUSY","CHG-L","CHG-R","RND-EXIT","GD","GD","GD","GD","GU","GU","GU","GU","INCIDENT","G-ON","G-OFF","FV","FV-Mirror","LV","LV-Mirror","RV","RV-Mirror","BV","IN-S","OUT-S"]
     for i in range (0, len(action_verbalizada)):
         if verbalizada == action_verbalizada[i]:
-            return array_codes[1]
+            return array_codes[i]
     for i in range (0, len(action_verbalizada_2)):
         if verbalizada == action_verbalizada_2[i]:
-            return array_codes[1]
+            return array_codes[i]
     else:
         return None
