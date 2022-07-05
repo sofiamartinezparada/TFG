@@ -1,10 +1,8 @@
-from csv import excel
 from read_excel_files import main_read
 from database import make_queries, create_database
 from funciones_interfaz import *
 import os
-from patrones import velocidades_marcha, embragar
-from PyQt5 import QtMultimedia, QtWidgets, uic
+from PyQt5 import QtWidgets, uic
 from PyQt5.QtWidgets import QApplication
 import sys
 from video_player import Window_Player
@@ -14,22 +12,6 @@ info  = main_read()
 
 create_database()
 make_queries(info)
-
-'''
-deceleracion_tercera = velocidades_marcha('tercera', 'Aprox')
-print(deceleracion_tercera)
-
-deceleracion_segunda = velocidades_marcha('segunda', 'Aprox')
-print(deceleracion_segunda)
-
-deceleracion_primera = velocidades_marcha('primera', 'Dentro')
-print(deceleracion_primera)
-
-aceleracion_segunda = velocidades_marcha('segunda', 'Dentro')
-print(aceleracion_segunda)
-
-por_embrague = embragar()
-print(por_embrague)'''
 
 
 #INTERFAZ
@@ -53,8 +35,8 @@ class MyWindow(QtWidgets.QMainWindow):
         ## Botón siguiente (de 1ª a 2ª ventana)
         self.btnSiguiente1.setEnabled(False)
         self.btnSiguiente1.clicked.connect(self.cambiarSegundaVentana)
-
         
+
         # Inserta un vídeo desde una ruta local
     def insertarVideoLocal(self):
         a = self.openDialogBox()

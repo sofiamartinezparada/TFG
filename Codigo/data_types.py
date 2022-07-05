@@ -1,14 +1,10 @@
-class Rotonda:
-    def __init__(self, fecha, actions):
+class Maniobra:
+    def __init__(self, fecha, id, tipo, info, actions):
         self.fecha = fecha
-        self.actions = actions
-
-'''class Maniobra:
-    def __init__(self, fecha, id, tipo, info):
-        self.fecha = fecha
-        self.id = id
         self.tipo = tipo
-        self.info = info'''
+        self.id = id
+        self.info = info
+        self.actions = actions
 
 class Action:
     def __init__(self, verbalizada, percepcion, accion, distancia_ceda_m, vel_actual, limite_api, pos, distancia_coche, tr_zi, tr_zc, tr_zd, coche_izq, coche_der):

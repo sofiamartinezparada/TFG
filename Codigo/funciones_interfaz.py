@@ -1,5 +1,4 @@
 from PyQt5 import QtCore
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
@@ -277,6 +276,8 @@ def write_on_excel(data):
 
     add_hoja(excel_file , data, nombre)
 
+    return True
+
 def add_hoja(excel_file, data, nombre):
     excel_file.create_sheet(nombre)
     
@@ -285,11 +286,18 @@ def add_hoja(excel_file, data, nombre):
 
     fecha1 = nombre.split(' ')[2]
     fecha_spliteada = fecha1.split('-')
-    fecha = fecha_spliteada[2]+'/' +fecha_spliteada[1]+'/'+ fecha_spliteada[0]
+    fecha = fecha_spliteada[2]+'/' +fecha_spliteada[1]+'/'+ '21'
     active_sheet.append((fecha,''))
 
+    ax = nombre.split(' ')[0]
+    aux1= ''
+    if ax == 'Rot':
+        aux1 = 'ROTONDA '
+    ax1 = nombre.split(' ')[1]
+
+    asd = aux1 + ax1
     active_sheet.append(('Acciones verbalizadas','x1', 'x2','x3','x4','x5','x6','x7','x8','x9','x10','x11','x12'))
-    active_sheet.append(('ROTONDA','Percepción', 'Acción','Distancia real al ceda el paso (metros)','Velocidad actual','Límite velocidad GoogleMaps API','Posición','Distancia con coche delante 1 = media 2 = cerca','Zi','Zc','Zd','Coche en Carril izquierdo','Coche en Carril derecho'))
+    active_sheet.append((str(asd),'Percepción', 'Acción','Distancia real al ceda el paso (metros)','Velocidad actual','Límite velocidad GoogleMaps API','Posición','Distancia con coche delante 1 = media 2 = cerca','Zi','Zc','Zd','Coche en Carril izquierdo','Coche en Carril derecho'))
     for act in data:
         active_sheet.append(act)
 

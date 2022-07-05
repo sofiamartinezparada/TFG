@@ -3,24 +3,27 @@ import os
 import shutil
 
 def create_database():
-    if os.path.exists('rotondas.db'):
-        connection = sqlite3.connect('rotondas.db')
+    if os.path.exists('maniobras.db'):
+        connection = sqlite3.connect('maniobras.db')
         cursor = connection.cursor()
         cursor.execute('DROP TABLE Acciones;')
-        cursor.execute('DROP TABLE Rotondas;')
+        cursor.execute('DROP TABLE Maniobras;')
         connection.commit()
         cursor.close()
         connection.close()
-    connection = sqlite3.connect('rotondas.db')
+    connection = sqlite3.connect('maniobras.db')
     cursor = connection.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS Rotondas
+    cursor.execute('''CREATE TABLE IF NOT EXISTS Maniobras
                 (fecha Date NOT NULL,
-                PRIMARY KEY (Fecha))''')
+				tipo int NOT NULL,
+                id int NOT NULL,
+				info int,
+                PRIMARY KEY (Fecha, tipo, id))''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS Acciones
-                (fecha Date,  orden INT, verbalizada TEXT, percepcion TEXT, accion TEXT, distancia_ceda_m INT, vel_actual FLOAT, limite_api INT, limite_visto INT,
+                (fecha Date, maniobra_tipo INT,maniobra_id INT, orden INT, verbalizada TEXT, percepcion TEXT, accion TEXT, distancia_ceda_m INT, vel_actual FLOAT, limite_api INT, limite_visto INT,
                 pos TEXT, distancia_coche INT, distancia_ceda INT, tr_zi INT, tr_zc INT, tr_zd INT, coche_izq INT, coche_der INT,
-                FOREIGN KEY (fecha) REFERENCES Rotondas(fecha),
-                Constraint PK_Acciones Primary Key (fecha, orden))''')
+                FOREIGN KEY (maniobra_tipo, maniobra_id) REFERENCES Maniobras(tipo, id),
+                Constraint PK_Acciones Primary Key (fecha, orden, maniobra_tipo, maniobra_id))''')
     cursor.close()
 
 def final_query (path):
@@ -37,7 +40,7 @@ def execute_query(path):
     with open(path) as f:
         info = f.read()
         f.close()
-    connection = sqlite3.connect('rotondas.db' ,timeout = 100)
+    connection = sqlite3.connect('maniobras.db' ,timeout = 100)
     cursor = connection.cursor()
     cursor.execute(info)
     connection.commit()
@@ -49,24 +52,30 @@ def make_queries(rotondas):
         shutil.rmtree('QUERIES/')
     os.mkdir('QUERIES/')
 
-    insert_rotonda = 'INSERT INTO Rotondas (fecha) VALUES'
-    f = open('QUERIES/rotondas.sql' , 'a')
+    insert_rotonda = 'INSERT INTO Maniobras (fecha, tipo, id, info) VALUES'
+    f = open('QUERIES/maniobras.sql' , 'a')
     f.write(insert_rotonda)
     f.close()
 
-    insert_action = 'INSERT INTO Acciones (fecha, orden, verbalizada, percepcion, accion, distancia_ceda_m, vel_actual, limite_api,pos, distancia_coche, tr_zi, tr_zc, tr_zd, coche_izq, coche_der) VALUES'
+    insert_action = 'INSERT INTO Acciones (fecha, maniobra_tipo, maniobra_id, orden, verbalizada, percepcion, accion, distancia_ceda_m, vel_actual, limite_api,pos, distancia_coche, tr_zi, tr_zc, tr_zd, coche_izq, coche_der) VALUES'
     f = open('QUERIES/acciones.sql' , 'a')
     f.write(insert_action)
     f.close()
     for rotonda in rotondas:
-        rot = '\n(\'' + str(rotonda.fecha) + '\'),'
-        f = open('QUERIES/rotondas.sql' , 'a')
+        rot_fecha = '\n(\'' + str(rotonda.fecha) + '\','
+        rot_tipo = str(rotonda.tipo) + ','
+        rot_id= str(rotonda.id) + ','
+        rot_info = str(rotonda.info) + '),'
+        rot = rot_fecha + rot_tipo + rot_id + rot_info
+        f = open('QUERIES/maniobras.sql' , 'a')
         f.write(rot)
         f.close()
         actions = rotonda.actions
         orden = 0
         for action in actions:
             fecha ='\n(\'' + str(rotonda.fecha) + '\', '
+            maniobra_tipo  = str(rotonda.tipo) + ','
+            maniobra_id  = str(rotonda.id) + ','
             ord  = str(orden) + ','
             verbalizada = '\'' + str(action.verbalizada) + '\', '
             percepcion = '\'' + str(action.percepcion) + '\', '
@@ -82,15 +91,15 @@ def make_queries(rotondas):
             coche_izq = str(action.coche_izq) + ','
             coche_der = str(action.coche_der) + '),'
             
-            act = fecha + ord +  verbalizada +percepcion + accion + distancia_ceda_m + vel_actual +limite_api + pos + distancia_coche + tr_zi + tr_zc + tr_zd + coche_izq + coche_der
+            act = fecha + maniobra_tipo + maniobra_id + ord +  verbalizada +percepcion + accion + distancia_ceda_m + vel_actual +limite_api + pos + distancia_coche + tr_zi + tr_zc + tr_zd + coche_izq + coche_der
             act = act.replace('None', 'null')
             act = act.replace(',  ,', ', null,')
             f = open('QUERIES/acciones.sql' , 'a')
             f.write(act)
             f.close()
             orden  = orden +  1
-    final_query('QUERIES/rotondas.sql')
+    final_query('QUERIES/maniobras.sql')
     final_query('QUERIES/acciones.sql')
 
-    execute_query('QUERIES/rotondas.sql')
+    execute_query('QUERIES/maniobras.sql')
     execute_query('QUERIES/acciones.sql')

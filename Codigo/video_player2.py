@@ -1,10 +1,9 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QMainWindow, QPushButton,QStyle, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QPushButton,QStyle, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 import sys
 from PyQt5.QtCore import Qt, QUrl
 from funciones_interfaz import *
-from PyQt5 import QtMultimedia, QtWidgets, uic
 
 class Window_Player_2(QWidget):
     def __init__(self):

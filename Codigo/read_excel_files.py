@@ -2,7 +2,7 @@
 import openpyxl as xl
 import glob
 from data_types import Action
-from data_types import Rotonda
+from data_types import Maniobra
 
 
 def get_all_excel_files():
@@ -158,12 +158,18 @@ def read_excel(path):
 
         fecha = active_sheet.cell(row = 1, column = 1).value
         fecha = str(fecha).split(' ')[0]
-        rotonda = Rotonda(fecha,array_actions)
+        aux = active_sheet.cell(row = 3, column = 1).value
+        if 'ROTONDA' in aux:
+            tipo = 1
+        id = aux.split(' ')[1]
+        info = 'NULL'
+        rotonda = Maniobra(fecha, tipo, id, info, array_actions)
         rotondas.append(rotonda)
     return rotondas
 
 def main_read():
-    paths = get_all_excel_files()
-    for path in paths:
-        rotondas = read_excel(path)
+    path = './Info/Rotondas supervisadas v7.xlsx'
+    rotondas = read_excel(path)
     return rotondas
+
+main_read()

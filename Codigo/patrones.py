@@ -1,11 +1,11 @@
 import sqlite3
 
 #import numpy
-from data_types import Action, Rotonda
+from data_types import Action, Maniobra
 
 def get_fechas_by_sect(section):
     array_rotondas = []
-    connection = sqlite3.connect('rotondas.db')
+    connection = sqlite3.connect('maniobras.db')
     cursor = connection.cursor()
     
     consulta = 'SELECT DISTINCT fecha  from Acciones WHERE pos = \''+ section +'\''
@@ -20,7 +20,7 @@ def get_fechas_by_sect(section):
 
 def get_by_section(section):
     array_rotondas = []
-    connection = sqlite3.connect('rotondas.db')
+    connection = sqlite3.connect('maniobras.db')
     cursor = connection.cursor()
     
     consulta = 'SELECT * from Acciones WHERE pos = \''+ section +'\' ORDER BY orden ASC'
@@ -37,14 +37,14 @@ def get_by_section(section):
             if fecha == dato[0]:
                 act = Action(dato[2], dato[3],dato[4],dato[5],dato[6],dato[7],dato[8],dato[9],dato[10],dato[11],dato[12],dato[13],dato[14])
                 aux.append(act)
-        rot = Rotonda(fecha, aux)
+        rot = Maniobra(fecha, aux)
         array_rotondas.append(rot)
     cursor.close()
     connection.close()
     return array_rotondas
 
 def validation_percent(verbalizada, action):
-    connection = sqlite3.connect('rotondas.db')
+    connection = sqlite3.connect('maniobras.db')
     cursor = connection.cursor()
     
     #Cases where the parameters apear
@@ -53,7 +53,7 @@ def validation_percent(verbalizada, action):
     number_cases = (cursor.fetchone())[0]
 
     #Total rounds
-    consulta = 'SELECT COUNT(*) from Rotondas'
+    consulta = 'SELECT COUNT(*) from Maniobras'
     cursor.execute(consulta)
     number_rotondas = (cursor.fetchone())[0]
 
@@ -68,7 +68,7 @@ def validation_percent(verbalizada, action):
         return False
 
 def velocidades_marcha(verbalizada, action):
-    connection = sqlite3.connect('rotondas.db')
+    connection = sqlite3.connect('maniobras.db')
     cursor = connection.cursor()
     #consulta = 'SELECT vel_actual from Acciones WHERE verbalizada LIKE \'%' +marcha+ '%\' AND vel_actual NOT NULL'
 
@@ -92,7 +92,7 @@ def velocidades_marcha(verbalizada, action):
     return info
 
 def get_cambios():
-    connection = sqlite3.connect('rotondas.db')
+    connection = sqlite3.connect('maniobras.db')
     cursor = connection.cursor()
     consulta  = 'SELECT * FROM Acciones WHERE verbalizada LIKE \'%primera%\' OR verbalizada LIKE \'%segunda%\'  OR verbalizada LIKE \'%tercera%\'  OR verbalizada LIKE \'%cuarta%\' '
 
@@ -108,7 +108,7 @@ def get_anterior_cambio(cambios):
     for cambio in cambios:
         fecha = cambio[0]
         orden = cambio[1]
-        connection = sqlite3.connect('rotondas.db')
+        connection = sqlite3.connect('maniobras.db')
         cursor = connection.cursor()
 
         consulta = 'SELECT * FROM Acciones WHERE fecha = \'' + fecha + '\' AND orden = ' + str(orden - 1)
@@ -142,19 +142,6 @@ def embragar():
 
     return porcentaje
 
-'''
-deceleracion_tercera = velocidades_marcha('tercera', 'Aprox')
-print(deceleracion_tercera)
-
-deceleracion_segunda = velocidades_marcha('segunda', 'Aprox')
-print(deceleracion_segunda)
-
-deceleracion_primera = velocidades_marcha('primera', 'Dentro')
-print(deceleracion_primera)
-
-aceleracion_segunda = velocidades_marcha('segunda', 'Dentro')
-print(aceleracion_segunda)
-'''
 
 def velocidad_patron_marcha(verbalizada, act):
     verb = ''
@@ -172,5 +159,3 @@ def velocidad_patron_marcha(verbalizada, act):
     else:
         return None
 
-'''print(velocidad_patron_marcha('bajo segunda', 'GD'))
-print(velocidad_patron_marcha('bajo primera', 'GD'))'''

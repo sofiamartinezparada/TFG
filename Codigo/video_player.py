@@ -1,12 +1,13 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QMainWindow, QPushButton,QStyle, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QSlider, QPushButton,QStyle, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 import sys
 from PyQt5.QtCore import Qt, QUrl
 from patrones import *
 from funciones_interfaz import *
-from PyQt5 import QtMultimedia, QtWidgets, uic
+from PyQt5 import QtWidgets, uic
 from video_player2 import Window_Player_2
+import time
 
 
 
@@ -316,7 +317,12 @@ class Window_Player(QWidget):
         data = self.read_data_table()
         #Write on file
         write_data_file(data)
-        write_on_excel(data)
+        acabado = write_on_excel(data)
+        time.sleep(10)
+        if acabado == True:
+            delete_path()
+            sys.exit() 
+
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
