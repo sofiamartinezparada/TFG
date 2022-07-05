@@ -1,14 +1,11 @@
 
 import openpyxl as xl
-import glob
 from data_types import Action
 from data_types import Maniobra
+import os
 
+basedir = os.path.dirname(__file__)
 
-def get_all_excel_files():
-    path = '/Users/sofiamartinezparada/Library/CloudStorage/OneDrive-Personal/UEM/4º/2º SEMESTRE/TFG/Proyecto/Info'+'/*.xlsx'
-    array_names = glob.glob(path)
-    return array_names
 
 def get_first_row(active_sheet, max_rows):
     for i in range (1, max_rows):
@@ -19,6 +16,7 @@ def get_first_row(active_sheet, max_rows):
 def read_excel(path):
     rotondas = []
     #load the excel file
+
     excel_file = xl.load_workbook(path)
     #Get the sheet names
     sheets = excel_file.sheetnames
@@ -158,6 +156,10 @@ def read_excel(path):
 
         fecha = active_sheet.cell(row = 1, column = 1).value
         fecha = str(fecha).split(' ')[0]
+
+        if "/" in fecha:
+            azuba = fecha.split('/')
+            fecha = azuba[2] + '-' + azuba[1] + '-' + azuba[0]
         aux = active_sheet.cell(row = 3, column = 1).value
         if 'ROTONDA' in aux:
             tipo = 1
@@ -168,8 +170,7 @@ def read_excel(path):
     return rotondas
 
 def main_read():
-    path = './Info/Rotondas supervisadas v7.xlsx'
+    path = os.path.join(basedir,'../Info/Rotondas supervisadas v7.xlsx')
     rotondas = read_excel(path)
     return rotondas
 
-main_read()

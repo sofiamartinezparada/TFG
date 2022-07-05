@@ -5,6 +5,9 @@ import sys
 from PyQt5.QtCore import Qt, QUrl
 from funciones_interfaz import *
 
+basedir = os.path.dirname(__file__)
+
+
 class Window_Player_2(QWidget):
     def __init__(self):
         super(Window_Player_2,self).__init__()

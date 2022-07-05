@@ -9,6 +9,7 @@ from PyQt5 import QtWidgets, uic
 from video_player2 import Window_Player_2
 import time
 
+basedir = os.path.dirname(__file__)
 
 
 class Window_Player(QWidget):
@@ -177,7 +178,7 @@ class Window_Player(QWidget):
         self.setVisible(False)
         #abrir ventana textos
         self.window = QtWidgets.QMainWindow()
-        self.window = uic.loadUi('./Interfaz/tercerapantalla.ui')
+        self.window = uic.loadUi(os.path.join(basedir,'../Interfaz/tercerapantalla.ui'))
         qtRectangle = self.frameGeometry()
         bottonright = QApplication.desktop().availableGeometry().bottomRight()
         qtRectangle.moveCenter(bottonright)
@@ -306,7 +307,7 @@ class Window_Player(QWidget):
 
     def verCodigos(self):
         self.absa = QtWidgets.QMainWindow()
-        self.absa = uic.loadUi('./Interfaz/anexo.ui')
+        self.absa = uic.loadUi(os.path.join(basedir,'../Interfaz/anexo.ui'))
         qtRectangle = self.frameGeometry()
         centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)

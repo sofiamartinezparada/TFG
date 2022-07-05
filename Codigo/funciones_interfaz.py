@@ -10,6 +10,7 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 import speech_recognition as sr
 
+basedir = os.path.dirname(__file__)
 
 
 #------------ Segunda Ventana ------------#
@@ -38,16 +39,16 @@ def transformSec(valor):
     return  numero
 
 def get_path():
-    with open('./Info/path.txt', 'r') as f:
+    with open(os.path.join(basedir,'../Info/path.txt'), 'r') as f:
         path = f.read()
         f.close()
     return path
 
 def delete_path():
-    os.remove('./Info/path.txt')
+    os.remove(os.path.join(basedir,'../Info/path.txt'))
 
 def write_path(path):
-    with open('./Info/path.txt', 'w') as f:
+    with open(os.path.join(basedir,'../Info/path.txt'), 'w') as f:
         f.write(path)
         f.close()
 
@@ -65,7 +66,7 @@ def aislarAudio():
     video_extraer_audio = VideoFileClip(path)
     #2021_07_06____11_25____1_Subjetiva.ROT 1.mp4
     name = nombre_maniobra(path)
-    new_path = './Info/' + name
+    new_path = os.path.join(basedir,'../Info/', name)
     if not os.path.isdir(new_path):
         os.mkdir(new_path)
     
@@ -160,7 +161,7 @@ def dividir_texto(texto):
 def comprobar_verbalizada(verbalizada):
 
     action_verbalizada = ["preparo rotonda","rotonda media","rotonda cerca","en rotonda","coche medio","coche cerca","uno libre","uno coches","uno viene","dos libre","dos cohes","tres libre","tres coches","freno","freno suelto","acelero","acelero mantengo","levanto pie acelerador","gira izquierda","girar derecha","recto","intermitente izquierda","intermitente izquierda off","intermitente derecha","intermitente derecha off","lado izquierda libre","lado izquierda ocupado","lado derecha libre","lado derecha ocupado","atrás libre","atrás ocupado","cambio carril izquierda","cambio carril derecha","salgo rotonda","bajo marcha","bajo marcha","bajo marcha","baje marcha","subo marcha","sube marcha","suba marcha","subo marcha","incidente indefinido","embrago","desembrague","mira frente","retrovisor central","mira izquierda","mira retrovisor izquierdo","mira derecha","mira retrovisor derecho","miro detrás","sonido dentro","sonido fuera"]
-    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","piso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambir derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
+    action_verbalizada_2 = ["aproximación","rotonda media","rotonda cerca","entro rotonda","coche medio","coche cerca","izquierda libre","izquierda libre","izquierda ocupado","frente libre","frente ocupado","derecha libre","derecha ocupado","piso freno","suelto freno","acelero","mantengo acelerador","suelto acelerador","giro izquierda","giro derecha","recto","izquierda on","izquierda off","derecha on","derecha off","vista izquierda libre","vista izquierda ocupado","vista derecha libre","vista derecha ocupao","atrás libre","atrás ocupado","cambiar izquierda","cambiar derecha","salgo rotonda","bajo primera","bajo segunda","bajo tercera","bajo cuarta","subo primera","subo segunda","subo tercera","subo cuarta","incidente indefinido","piso embrague", "suelto embrague","miro delante","miro retrovisor central","miro izquierda","miro retrovisor izquierdo","miro derecha","miro retrovisor derechi","mira detrás","sonido dentro","sonido fuera"]
     array_codes = ["APROX","RND-MD","RND-NR","RND-IN","CAR-MD","CAR-NR","L-FREE","L-FREE","L-BUSY","F-FREE","F-BUSY","R-FREE","R-BUSY","B-ON","B-OFF","T-ON","T-HOLD","T-OFF","TURN-L","TURN-R","STR","LB-ON","LB-OFF","RB-ON","LB-OFF","LV-FREE","LV-BUSY","RV-FREE","RV-BUSY","BK-FREE","BK-BUSY","CHG-L","CHG-R","RND-EXIT","GD","GD","GD","GD","GU","GU","GU","GU","INCIDENT","G-ON","G-OFF","FV","FV-Mirror","LV","LV-Mirror","RV","RV-Mirror","BV","IN-S","OUT-S"]
     for i in range (0, len(action_verbalizada)):
         if verbalizada == action_verbalizada[i]:
@@ -264,11 +265,12 @@ def write_data_file(data):
         f.close()
     
 def write_on_excel(data):
-    path = './Info/Rotondas supervisadas v7.xlsx'
+    path =  os.path.join(basedir,'../Info/Rotondas supervisadas v7.xlsx')
     excel_file = xl.load_workbook(path)
 
     #./Info/2021_07_06____11_25____1_Subjetiva.ROT 1/chunks
-    absa = (get_path().split('/'))[2]
+    absa = (get_path().split('/'))[-2]
+    
     rot = absa.split('.')[1].replace('ROT','Rot')
     fech = absa.split('____')[0].replace('_','-')
     nombre = rot + ' ' + fech
@@ -286,7 +288,7 @@ def add_hoja(excel_file, data, nombre):
 
     fecha1 = nombre.split(' ')[2]
     fecha_spliteada = fecha1.split('-')
-    fecha = fecha_spliteada[2]+'/' +fecha_spliteada[1]+'/'+ '21'
+    fecha = fecha_spliteada[2]+'/' +fecha_spliteada[1]+'/'+ fecha_spliteada[0]
     active_sheet.append((fecha,''))
 
     ax = nombre.split(' ')[0]
@@ -329,5 +331,5 @@ def add_hoja(excel_file, data, nombre):
         active_sheet.cell(row = 2, column=col).alignment = cell_alignment
         active_sheet.cell(row = 3, column=col).alignment = cell_alignment
 
-    excel_file.save(filename= './Info/Rotondas supervisadas v7.xlsx')
+    excel_file.save(filename= os.path.join(basedir,'../Info/Rotondas supervisadas v7.xlsx'))
 

@@ -43,7 +43,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../Info/estimulos.png</pixmap>
+       <pixmap>../Codigo/estimulos.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -67,7 +67,7 @@
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../Info/acciones.png</pixmap>
+       <pixmap>../Codigo/acciones.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>

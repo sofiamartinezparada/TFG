@@ -1,11 +1,15 @@
 import sqlite3
+import os
 
 #import numpy
 from data_types import Action, Maniobra
 
+basedir = os.path.dirname(__file__)
+
+
 def get_fechas_by_sect(section):
     array_rotondas = []
-    connection = sqlite3.connect('maniobras.db')
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
     cursor = connection.cursor()
     
     consulta = 'SELECT DISTINCT fecha  from Acciones WHERE pos = \''+ section +'\''
@@ -20,7 +24,7 @@ def get_fechas_by_sect(section):
 
 def get_by_section(section):
     array_rotondas = []
-    connection = sqlite3.connect('maniobras.db')
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
     cursor = connection.cursor()
     
     consulta = 'SELECT * from Acciones WHERE pos = \''+ section +'\' ORDER BY orden ASC'
@@ -44,7 +48,7 @@ def get_by_section(section):
     return array_rotondas
 
 def validation_percent(verbalizada, action):
-    connection = sqlite3.connect('maniobras.db')
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
     cursor = connection.cursor()
     
     #Cases where the parameters apear
@@ -68,7 +72,7 @@ def validation_percent(verbalizada, action):
         return False
 
 def velocidades_marcha(verbalizada, action):
-    connection = sqlite3.connect('maniobras.db')
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
     cursor = connection.cursor()
     #consulta = 'SELECT vel_actual from Acciones WHERE verbalizada LIKE \'%' +marcha+ '%\' AND vel_actual NOT NULL'
 
@@ -92,7 +96,7 @@ def velocidades_marcha(verbalizada, action):
     return info
 
 def get_cambios():
-    connection = sqlite3.connect('maniobras.db')
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
     cursor = connection.cursor()
     consulta  = 'SELECT * FROM Acciones WHERE verbalizada LIKE \'%primera%\' OR verbalizada LIKE \'%segunda%\'  OR verbalizada LIKE \'%tercera%\'  OR verbalizada LIKE \'%cuarta%\' '
 
@@ -108,7 +112,7 @@ def get_anterior_cambio(cambios):
     for cambio in cambios:
         fecha = cambio[0]
         orden = cambio[1]
-        connection = sqlite3.connect('maniobras.db')
+        connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
         cursor = connection.cursor()
 
         consulta = 'SELECT * FROM Acciones WHERE fecha = \'' + fecha + '\' AND orden = ' + str(orden - 1)

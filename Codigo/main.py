@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication
 import sys
 from video_player import Window_Player
 
+basedir = os.path.dirname(__file__)
 
 info  = main_read()
 
@@ -20,7 +21,7 @@ class MyWindow(QtWidgets.QMainWindow):
         super(MyWindow,self).__init__()
 
         #Iniciamos la primera ventana
-        uic.loadUi('./Interfaz/pantalla_principal.ui',self)      
+        uic.loadUi(os.path.join(basedir,'../Interfaz/pantalla_principal.ui'),self)  
         qtRectangle = self.frameGeometry()
         centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
@@ -69,7 +70,8 @@ class MyWindow(QtWidgets.QMainWindow):
         fech = absa.split('____')[0].replace('_','-')
         nombre = rot + ' ' + fech
 
-        excelpath = './Info/Rotondas supervisadas v7.xlsx'
+
+        excelpath = os.path.join(basedir,'../Info/Rotondas supervisadas v7.xlsx')
         excel_file = xl.load_workbook(excelpath)
         sheets = excel_file.sheetnames
 

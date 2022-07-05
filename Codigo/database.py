@@ -2,16 +2,20 @@ import sqlite3
 import os
 import shutil
 
+basedir = os.path.dirname(__file__)
+
+
+
 def create_database():
-    if os.path.exists('maniobras.db'):
-        connection = sqlite3.connect('maniobras.db')
+    if os.path.exists(os.path.join(basedir,'../maniobras.db')):
+        connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
         cursor = connection.cursor()
         cursor.execute('DROP TABLE Acciones;')
         cursor.execute('DROP TABLE Maniobras;')
         connection.commit()
         cursor.close()
         connection.close()
-    connection = sqlite3.connect('maniobras.db')
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db'))
     cursor = connection.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS Maniobras
                 (fecha Date NOT NULL,
@@ -40,7 +44,7 @@ def execute_query(path):
     with open(path) as f:
         info = f.read()
         f.close()
-    connection = sqlite3.connect('maniobras.db' ,timeout = 100)
+    connection = sqlite3.connect(os.path.join(basedir,'../maniobras.db') ,timeout = 100)
     cursor = connection.cursor()
     cursor.execute(info)
     connection.commit()
