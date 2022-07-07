@@ -16,4 +16,10 @@ Una vez se cumplen los requisitos anteriores, solo será necesario ejecutar el a
 Para ver los resultados generados por la aplicación se debe consultar el archivo .xlxs (excel) de la carpeta Info/
 
 ## Hecho por [Sofía Martínez Parada](https://github.com/sofiamartinezparada)
+##### Universidad Europea de Madrid
+Cualquier duda, puede ponerse en contacto conmigo mediante:  </br>
+[Github](https://github.com/sofiamartinezparada) </br>
+[Linkedin](https://www.linkedin.com/in/sof%C3%ADa-mart%C3%ADnez-parada-77a731198/) </br>
+[Email](sofia.martinez.parada@outlook.es) </br>
+Teléfono: 698149747 </br>
 
