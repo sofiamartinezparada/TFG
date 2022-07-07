@@ -27,7 +27,7 @@ def create_database():
                 (fecha Date, maniobra_tipo INT,maniobra_id INT, orden INT, verbalizada TEXT, percepcion TEXT, accion TEXT, distancia_ceda_m INT, vel_actual FLOAT, limite_api INT, limite_visto INT,
                 pos TEXT, distancia_coche INT, distancia_ceda INT, tr_zi INT, tr_zc INT, tr_zd INT, coche_izq INT, coche_der INT,
                 FOREIGN KEY (maniobra_tipo, maniobra_id) REFERENCES Maniobras(tipo, id),
-                Constraint PK_Acciones Primary Key (fecha, orden, maniobra_tipo, maniobra_id))''')
+                Constraint PK_Acciones Primary Key (fecha, orden))''')
     cursor.close()
 
 def final_query (path):

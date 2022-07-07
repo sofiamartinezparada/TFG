@@ -112,7 +112,8 @@ def transcribir(numero_de_chunks):
     
     texto_path = actual_path.replace('/chunks','/texto_transcripto.txt')
     actual_path = actual_path.replace(' ', '\ ')
-    instruccion = 'rm -r ' +actual_path
+    #os.remove(actual_path)
+    instruccion= 'rm -r ' +actual_path
     os.system(instruccion)
         
     with open(texto_path, 'w') as f:
